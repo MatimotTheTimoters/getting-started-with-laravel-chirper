@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ChirpController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $chirps = Chirp::with('user')
-        ->latest()
-        ->take(50)
-        ->get();
+            ->latest()
+            ->take(50)
+            ->get();
 
         return view('home', ['chirps' => $chirps]);
     }
@@ -49,7 +52,7 @@ class ChirpController extends Controller
         $this->authorize('update', $chirp);
 
         // Add authorization
-        return view ('chirps.edit', compact('chirp'));
+        return view('chirps.edit', compact('chirp'));
     }
 
     /// Update chirp
